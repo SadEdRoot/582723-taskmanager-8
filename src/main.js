@@ -354,9 +354,9 @@ const createFilterString = (elementList) => {
   let string = ``;
   elementList.forEach((element) => {
     string += getFilterElement(element);
-  })
+  });
   return string;
-}
+};
 
 /* возращает строку со всеми карточками */
 const createCardString = (elementList) => {
