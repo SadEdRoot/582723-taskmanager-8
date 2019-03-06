@@ -1,7 +1,7 @@
 'use strict';
 
-const mainFilter = document.querySelector('.main__filter');
-const boardTasks = document.querySelector('.board__tasks');
+const mainFilter = document.querySelector(`.main__filter`);
+const boardTasks = document.querySelector(`.board__tasks`);
 
 
 const filters = [{
@@ -390,7 +390,7 @@ mainFilter.childNodes.forEach(element => {
   element.addEventListener('click', () => {
     clearBoardTasks();
     renderHTML(createCardString(cards), boardTasks);
-  })
+  });
 });
 
 /* для проверки */
