@@ -1,82 +1,83 @@
 'use strict';
 
-const mainFilter = document.querySelector('.main__filter');
-const boardTasks = document.querySelector('.board__tasks');
+const mainFilter = document.querySelector(`.main__filter`);
+const boardTasks = document.querySelector(`.board__tasks`);
 
 
-const filters = [{
-    title: 'all',
+const filters = [
+  {
+    title: `all`,
     taskNumber: 15,
     isChecked: true
   },
   {
-    title: 'overdue',
+    title: `overdue`,
     taskNumber: 0,
     isDisabled: true
   },
   {
-    title: 'today',
+    title: `today`,
     taskNumber: 0,
     isDisabled: true
   },
   {
-    title: 'favorites',
+    title: `favorites`,
     taskNumber: 8
   },
   {
-    title: 'repeating',
+    title: `repeating`,
     taskNumber: 2
   },
   {
-    title: 'tags',
+    title: `tags`,
     taskNumber: 6
   },
   {
-    title: 'archive',
+    title: `archive`,
     taskNumber: 115
   }];
 
 const cards = [
   {
-    id: '10',
-    color: 'black',
+    id: `10`,
+    color: `black`,
     edit: true,
     deadline: true,
-    deadlineDate: '23 September',
-    deadlineTime: '11:15 PM',
+    deadlineDate: `23 September`,
+    deadlineTime: `11:15 PM`,
     repeat: false,
-    text: 'Базовый текст',
+    text: `Базовый текст`,
     hashtag: [],
-    img: '',
+    img: ``,
     favorites: false
   },
   {
-    id: '11',
-    color: 'yellow',
+    id: `11`,
+    color: `yellow`,
     edit: false,
     deadline: false,
-    deadlineDate: '',
-    deadlineTime: '',
+    deadlineDate: ``,
+    deadlineTime: ``,
     repeat: true,
-    text: 'Базовый текст',
+    text: `Базовый текст`,
     hashtag: [],
-    img: '',
+    img: ``,
     favorites: false
   },
   {
-    id: '12',
-    color: 'green',
+    id: `12`,
+    color: `green`,
     edit: true,
     deadline: false,
-    deadlineDate: '',
-    deadlineTime: '',
+    deadlineDate: ``,
+    deadlineTime: ``,
     repeat: false,
-    text: '',
+    text: ``,
     hashtag: [],
-    img: '',
+    img: ``,
     favorites: false
   }
-]
+];
 
 /* возращает один фильтр*/
 const getFilterElement = (filterObj) => `
@@ -85,8 +86,8 @@ const getFilterElement = (filterObj) => `
   id="filter__${filterObj.title}"
   class="filter__input visually-hidden"
   name="filter"
-  ${filterObj.isChecked ? " checked" : ""}
-  ${filterObj.isDisabled ? " disabled" : ""}
+  ${filterObj.isChecked ? `checked` : ``}
+  ${filterObj.isDisabled ? `disabled` : ``}
   />
   <label for="filter__${filterObj.title}" class="filter__label">
     ${filterObj.title} <span class="filter__${filterObj.title}-count">${filterObj.taskNumber}</span></label
@@ -261,7 +262,7 @@ const getCardElement = (cardObj) => `
             name="img"
           />
           <img
-            src="${cardObj.img ? cardObj.img  : 'img/add-photo.svg' }"
+            src="${cardObj.img ? cardObj.img : `img/add-photo.svg` }"
             alt="task picture"
             class="card__img"
           />
@@ -276,7 +277,7 @@ const getCardElement = (cardObj) => `
               class="card__color-input card__color-input--black visually-hidden"
               name="color"
               value="black"
-              ${ (cardObj.repeat == 'black')? `checked` : ``}
+              ${ (cardObj.repeat === `black`) ? `checked` : ``}
             />
             <label
               for="color-black-${cardObj.id}"
@@ -289,7 +290,7 @@ const getCardElement = (cardObj) => `
               class="card__color-input card__color-input--yellow visually-hidden"
               name="color"
               value="yellow"
-              ${ (cardObj.repeat == 'yellow')? `checked` : ``}
+              ${ (cardObj.repeat === `yellow`) ? `checked` : ``}
             />
             <label
               for="color-yellow-${cardObj.id}"
@@ -302,7 +303,7 @@ const getCardElement = (cardObj) => `
               class="card__color-input card__color-input--blue visually-hidden"
               name="color"
               value="blue"
-              ${ (cardObj.repeat == 'blue')? `checked` : ``}
+              ${ (cardObj.repeat === `blue`) ? `checked` : ``}
             />
             <label
               for="color-blue-${cardObj.id}"
@@ -315,7 +316,7 @@ const getCardElement = (cardObj) => `
               class="card__color-input card__color-input--green visually-hidden"
               name="color"
               value="green"
-              ${ (cardObj.repeat == 'green')? `checked` : ``}
+              ${ (cardObj.repeat === `green`) ? `checked` : ``}
             />
             <label
               for="color-green-${cardObj.id}"
@@ -328,7 +329,7 @@ const getCardElement = (cardObj) => `
               class="card__color-input card__color-input--pink visually-hidden"
               name="color"
               value="pink"
-              ${ (cardObj.repeat == 'pink')? `checked` : ``}
+              ${ (cardObj.repeat === `pink`) ? `checked` : ``}
             />
             <label
               for="color-pink-${cardObj.id}"
@@ -351,46 +352,41 @@ const getCardElement = (cardObj) => `
 /* возращает строку со всеми фильтрами */
 const createFilterString = (elementList) => {
   let string = ``;
-  elementList.forEach( element => {
+  elementList.forEach((element) => {
     string += getFilterElement(element);
-  })
+  });
   return string;
-}
+};
 
 /* возращает строку со всеми карточками */
 const createCardString = (elementList) => {
   let string = ``;
-  elementList.forEach( element => {
+  elementList.forEach((element) => {
     string += getCardElement(element);
-  })
+  });
   return string;
-}
+};
 
 
 /* отрисовывает HTML в контейнере */
 const renderHTML = (html, container) => {
   const filtersListFragment = document.createDocumentFragment();
   const parser = new DOMParser();
-  const element = parser.parseFromString(html, `text/html`);
-  const cardChildren = element.body.childNodes;
+  const elements = parser.parseFromString(html, `text/html`);
+  const cardChildren = elements.body.childNodes;
   cardChildren.forEach((element) => {
     filtersListFragment.appendChild(element);
-  })
-  container.innerHTML='';
+  });
+  container.innerHTML = ``;
   container.appendChild(filtersListFragment);
-}
-
-const clearBoardTasks = () => {
-  boardTasks
 };
 
 renderHTML(createFilterString(filters), mainFilter);
 
-mainFilter.childNodes.forEach(element => {
-  element.addEventListener('click', () => {
-    clearBoardTasks();
+mainFilter.childNodes.forEach((element) => {
+  element.addEventListener(`click`, () => {
     renderHTML(createCardString(cards), boardTasks);
-  })
+  });
 });
 
 /* для проверки */
