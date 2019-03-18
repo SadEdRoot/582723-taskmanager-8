@@ -38,47 +38,40 @@ const filters = [
     taskNumber: 115
   }];
 
-const cards = [
-  {
-    id: `10`,
-    color: `black`,
-    edit: true,
-    deadline: true,
-    deadlineDate: `23 September`,
-    deadlineTime: `11:15 PM`,
-    repeat: false,
-    text: `Базовый текст`,
-    hashtag: [],
-    img: ``,
-    favorites: false
+let cards = [];
+
+const getCard = () => ({
+  title: [`Изучить теорию`, `Сделать домашку`, `Пройти интенсив на соточку`][Math.floor(Math.random() * 3)],
+  dueDate: Date.now() + Math.floor(Math.random() * 14) * 24 * 60 * 60 * 1000 - 604800000,
+  tags: new Set([
+    `cinema`,
+    `entertainment`,
+    `myself`,
+    `cinema`,
+  ]),
+  picture: `//picsum.photos/100/100?r=${Math.random()}`,
+  color: [`black`, `yellow`, `blue`, `green`, `pink`][Math.floor(Math.random() * 5)],
+  repeatingDays: {
+    'mo': true,
+    'tu': false,
+    'we': true,
+    'th': false,
+    'fr': false,
+    'sa': true,
+    'su': false,
   },
-  {
-    id: `11`,
-    color: `yellow`,
-    edit: false,
-    deadline: false,
-    deadlineDate: ``,
-    deadlineTime: ``,
-    repeat: true,
-    text: `Базовый текст`,
-    hashtag: [],
-    img: ``,
-    favorites: false
-  },
-  {
-    id: `12`,
-    color: `green`,
-    edit: true,
-    deadline: false,
-    deadlineDate: ``,
-    deadlineTime: ``,
-    repeat: false,
-    text: ``,
-    hashtag: [],
-    img: ``,
-    favorites: false
+  isDone: false,
+  isFavorites: false,
+  isEdit: false
+});
+
+const getCards = (taskNumber) => {
+  cards = [];
+  for (let i = 0; i < taskNumber; i++) {
+    cards.push(getCard());
   }
-];
+};
+
 
 /* возращает строку со всеми фильтрами */
 const createFilterString = (elementList) => {
@@ -119,12 +112,7 @@ mainFilter.addEventListener(`click`, function () {
   if (target.tagName === `input`) {
     return;
   }
+  getCards(Math.floor(Math.random() * 10 + 1));
   renderHTML(createCardString(cards), boardTasks);
 });
 
-/* для проверки */
-/*
-renderHTML(getFilterElement(filters[0]), mainFilter);
-renderHTML(getCardElement(cards[0]), boardTasks);
-renderHTML(createCardString(cards), boardTasks);
-*/

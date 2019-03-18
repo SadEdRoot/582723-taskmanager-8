@@ -1,5 +1,5 @@
 export default (cardObj) => `
-<article class="card ${ cardObj.edit ? `card--edit` : ``} card--${cardObj.color} ${ cardObj.repeat ? `card--repeat` : ``} ${ cardObj.deadline ? `card--deadline` : ``}">
+<article class="card ${ cardObj.isEdit ? `card--edit` : ``} card--${cardObj.color} ${ cardObj.repeat ? `card--repeat` : ``} ${ cardObj.deadline ? `card--deadline` : ``}">
   <form class="card__form" method="get">
     <div class="card__inner">
       <div class="card__control">
@@ -30,7 +30,7 @@ export default (cardObj) => `
             placeholder="Start typing your text here..."
             name="text"
           >
-            ${cardObj.text}
+            ${cardObj.title}
           </textarea>
         </label>
       </div>
