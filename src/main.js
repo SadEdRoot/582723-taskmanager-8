@@ -1,5 +1,7 @@
 import getFilterElement from './make-filter.js';
 import getCardElement from './make-task.js';
+import {getRandomInt} from './utils.js';
+import {getRandomBoolean} from './utils.js';
 
 const mainFilter = document.querySelector(`.main__filter`);
 const boardTasks = document.querySelector(`.board__tasks`);
@@ -52,13 +54,13 @@ const getCard = () => ({
   picture: `//picsum.photos/100/100?r=${Math.random()}`,
   color: [`black`, `yellow`, `blue`, `green`, `pink`][Math.floor(Math.random() * 5)],
   repeatingDays: {
-    'mo': true,
-    'tu': false,
-    'we': true,
-    'th': false,
-    'fr': false,
-    'sa': true,
-    'su': false,
+    'mo': getRandomBoolean(),
+    'tu': getRandomBoolean(),
+    'we': getRandomBoolean(),
+    'th': getRandomBoolean(),
+    'fr': getRandomBoolean(),
+    'sa': getRandomBoolean(),
+    'su': getRandomBoolean()
   },
   isDone: false,
   isFavorites: false,
@@ -112,7 +114,7 @@ mainFilter.addEventListener(`click`, function () {
   if (target.tagName === `input`) {
     return;
   }
-  getCards(Math.floor(Math.random() * 10 + 1));
+  getCards(getRandomInt(0, 10));
   renderHTML(createCardString(cards), boardTasks);
 });
 

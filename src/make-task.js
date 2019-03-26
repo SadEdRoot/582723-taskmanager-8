@@ -1,5 +1,5 @@
-export default (cardObj) => `
-<article class="card ${ cardObj.isEdit ? `card--edit` : ``} card--${cardObj.color} ${ cardObj.repeat ? `card--repeat` : ``} ${ cardObj.deadline ? `card--deadline` : ``}">
+export default (task) => `
+<article class="card ${ task.isEdit ? `card--edit` : ``} card--${task.color} ${ task.repeat ? `card--repeat` : ``} ${ task.deadline ? `card--deadline` : ``}">
   <form class="card__form" method="get">
     <div class="card__inner">
       <div class="card__control">
@@ -30,7 +30,7 @@ export default (cardObj) => `
             placeholder="Start typing your text here..."
             name="text"
           >
-            ${cardObj.title}
+            ${task.title}
           </textarea>
         </label>
       </div>
@@ -39,10 +39,10 @@ export default (cardObj) => `
         <div class="card__details">
           <div class="card__dates">
             <button class="card__date-deadline-toggle" type="button">
-              date: <span class="card__date-status">${cardObj.deadline ? `yes` : `no`}</span>
+              date: <span class="card__date-status">${task.deadline ? `yes` : `no`}</span>
             </button>
 
-            <fieldset class="card__date-deadline" ${cardObj.deadline ? `yes` : `no`}disabled>
+            <fieldset class="card__date-deadline" ${task.deadline ? `yes` : `no`}disabled>
               <label class="card__input-deadline-wrap">
                 <input
                   class="card__date"
@@ -62,7 +62,7 @@ export default (cardObj) => `
             </fieldset>
 
             <button class="card__repeat-toggle" type="button">
-              repeat:<span class="card__repeat-status">${cardObj.repeat ? `yes` : `no`}</span>
+              repeat:<span class="card__repeat-status">${task.repeat ? `yes` : `no`}</span>
             </button>
 
             <fieldset class="card__repeat-days" disabled>
@@ -70,53 +70,53 @@ export default (cardObj) => `
                 <input
                   class="visually-hidden card__repeat-day-input"
                   type="checkbox"
-                  id="repeat-mo-${cardObj.id}"
+                  id="repeat-mo-${task.id}"
                   name="repeat"
                   value="mo"
                 />
-                <label class="card__repeat-day" for="repeat-mo-${cardObj.id}"
+                <label class="card__repeat-day" for="repeat-mo-${task.id}"
                   >mo</label
                 >
                 <input
                   class="visually-hidden card__repeat-day-input"
                   type="checkbox"
-                  id="repeat-tu-${cardObj.id}"
+                  id="repeat-tu-${task.id}"
                   name="repeat"
                   value="tu"
                   checked
                 />
-                <label class="card__repeat-day" for="repeat-tu-${cardObj.id}"
+                <label class="card__repeat-day" for="repeat-tu-${task.id}"
                   >tu</label
                 >
                 <input
                   class="visually-hidden card__repeat-day-input"
                   type="checkbox"
-                  id="repeat-we-${cardObj.id}"
+                  id="repeat-we-${task.id}"
                   name="repeat"
                   value="we"
                 />
-                <label class="card__repeat-day" for="repeat-we-${cardObj.id}"
+                <label class="card__repeat-day" for="repeat-we-${task.id}"
                   >we</label
                 >
                 <input
                   class="visually-hidden card__repeat-day-input"
                   type="checkbox"
-                  id="repeat-th-${cardObj.id}"
+                  id="repeat-th-${task.id}"
                   name="repeat"
                   value="th"
                 />
-                <label class="card__repeat-day" for="repeat-th-${cardObj.id}"
+                <label class="card__repeat-day" for="repeat-th-${task.id}"
                   >th</label
                 >
                 <input
                   class="visually-hidden card__repeat-day-input"
                   type="checkbox"
-                  id="repeat-fr-${cardObj.id}"
+                  id="repeat-fr-${task.id}"
                   name="repeat"
                   value="fr"
                   checked
                 />
-                <label class="card__repeat-day" for="repeat-fr-${cardObj.id}"
+                <label class="card__repeat-day" for="repeat-fr-${task.id}"
                   >fr</label
                 >
                 <input
@@ -124,20 +124,20 @@ export default (cardObj) => `
                   type="checkbox"
                   name="repeat"
                   value="sa"
-                  id="repeat-sa-${cardObj.id}"
+                  id="repeat-sa-${task.id}"
                 />
-                <label class="card__repeat-day" for="repeat-sa-${cardObj.id}"
+                <label class="card__repeat-day" for="repeat-sa-${task.id}"
                   >sa</label
                 >
                 <input
                   class="visually-hidden card__repeat-day-input"
                   type="checkbox"
-                  id="repeat-su-${cardObj.id}"
+                  id="repeat-su-${task.id}"
                   name="repeat"
                   value="su"
                   checked
                 />
-                <label class="card__repeat-day" for="repeat-su-${cardObj.id}"
+                <label class="card__repeat-day" for="repeat-su-${task.id}"
                   >su</label
                 >
               </div>
@@ -165,7 +165,7 @@ export default (cardObj) => `
             name="img"
           />
           <img
-            src="${cardObj.img ? cardObj.img : `img/add-photo.svg` }"
+            src="${task.img ? task.img : `img/add-photo.svg` }"
             alt="task picture"
             class="card__img"
           />
@@ -176,66 +176,66 @@ export default (cardObj) => `
           <div class="card__colors-wrap">
             <input
               type="radio"
-              id="color-black-${cardObj.id}"
+              id="color-black-${task.id}"
               class="card__color-input card__color-input--black visually-hidden"
               name="color"
               value="black"
-              ${ (cardObj.repeat === `black`) ? `checked` : ``}
+              ${ (task.repeat === `black`) ? `checked` : ``}
             />
             <label
-              for="color-black-${cardObj.id}"
+              for="color-black-${task.id}"
               class="card__color card__color--black"
               >black</label
             >
             <input
               type="radio"
-              id="color-yellow-${cardObj.id}"
+              id="color-yellow-${task.id}"
               class="card__color-input card__color-input--yellow visually-hidden"
               name="color"
               value="yellow"
-              ${ (cardObj.repeat === `yellow`) ? `checked` : ``}
+              ${ (task.repeat === `yellow`) ? `checked` : ``}
             />
             <label
-              for="color-yellow-${cardObj.id}"
+              for="color-yellow-${task.id}"
               class="card__color card__color--yellow"
               >yellow</label
             >
             <input
               type="radio"
-              id="color-blue-${cardObj.id}"
+              id="color-blue-${task.id}"
               class="card__color-input card__color-input--blue visually-hidden"
               name="color"
               value="blue"
-              ${ (cardObj.repeat === `blue`) ? `checked` : ``}
+              ${ (task.repeat === `blue`) ? `checked` : ``}
             />
             <label
-              for="color-blue-${cardObj.id}"
+              for="color-blue-${task.id}"
               class="card__color card__color--blue"
               >blue</label
             >
             <input
               type="radio"
-              id="color-green-${cardObj.id}"
+              id="color-green-${task.id}"
               class="card__color-input card__color-input--green visually-hidden"
               name="color"
               value="green"
-              ${ (cardObj.repeat === `green`) ? `checked` : ``}
+              ${ (task.repeat === `green`) ? `checked` : ``}
             />
             <label
-              for="color-green-${cardObj.id}"
+              for="color-green-${task.id}"
               class="card__color card__color--green"
               >green</label
             >
             <input
               type="radio"
-              id="color-pink-${cardObj.id}"
+              id="color-pink-${task.id}"
               class="card__color-input card__color-input--pink visually-hidden"
               name="color"
               value="pink"
-              ${ (cardObj.repeat === `pink`) ? `checked` : ``}
+              ${ (task.repeat === `pink`) ? `checked` : ``}
             />
             <label
-              for="color-pink-${cardObj.id}"
+              for="color-pink-${task.id}"
               class="card__color card__color--pink"
               >pink</label
             >
