@@ -1,7 +1,7 @@
 /* возращает одну карточку*/
 
 export default (cardObj) => `
-<article class="card ${ cardObj.edit ? `card--edit` : ``} card--${cardObj.color} ${ cardObj.repeat ? `card--repeat` : ``} ${ cardObj.deadline ? `card--deadline` : ``}">
+<article class="card ${ cardObj.isEdit ? `card--edit` : ``} card--${cardObj.color} ${ cardObj.isRepeat ? `card--repeat` : ``} ${ cardObj.deadline ? `card--deadline` : ``}">
   <form class="card__form" method="get">
     <div class="card__inner">
       <div class="card__control">
@@ -32,7 +32,7 @@ export default (cardObj) => `
             placeholder="Start typing your text here..."
             name="text"
           >
-            ${cardObj.text}
+            ${cardObj.title}
           </textarea>
         </label>
       </div>
@@ -167,7 +167,7 @@ export default (cardObj) => `
             name="img"
           />
           <img
-            src="${cardObj.img ? cardObj.img : `img/add-photo.svg` }"
+            src="${cardObj.picture ? cardObj.picture : `img/add-photo.svg` }"
             alt="task picture"
             class="card__img"
           />

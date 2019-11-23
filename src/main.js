@@ -1,5 +1,6 @@
 import getFilterElement from './make-filter.js';
-import getCardElement from './make-filter.js'
+import getCardElement from './make-card.js';
+import getTaskData from './get-task';
 
 const mainFilter = document.querySelector(`.main__filter`);
 const boardTasks = document.querySelector(`.board__tasks`);
@@ -37,7 +38,7 @@ const filters = [
     title: `archive`,
     taskNumber: 115
   }];
-
+/*
 const cards = [
   {
     id: `10`,
@@ -79,7 +80,7 @@ const cards = [
     favorites: false
   }
 ];
-
+*/
 /* складывает шаблоны по списку */
 const createHTMLString = (elementList, template) => {
   let string = ``;
@@ -107,9 +108,21 @@ renderHTML(createHTMLString(filters, getFilterElement), mainFilter);
 /* создает события для всех фильтров */
 mainFilter.childNodes.forEach((element) => {
   element.addEventListener(`click`, () => {
-    renderHTML(createHTMLString(cards, getCardElement), boardTasks);
+    renderHTML(createHTMLString(addCardToList(), getCardElement), boardTasks);
   });
 });
+
+
+/* создает список карточек */
+
+
+const addCardToList = () => {
+  const cardList = [];
+  for (let i = 0; i < (Math.floor(Math.random() * 10) + 1); i++) {
+    cardList.push(getTaskData());
+  }
+  return cardList;
+};
 
 /* для проверки */
 /*
