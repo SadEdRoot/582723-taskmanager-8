@@ -10,10 +10,6 @@ class TaskEdit {
     this._repeatingDays = data.repeatingDays;
     this._color = data.color;
     this._element = null;
-
-    this._state = {
-      isEdit: false,
-    };
   }
   _isRepeat() {
     return Object.values(this._repeatingDays).some((it) => it === true);
@@ -23,12 +19,7 @@ class TaskEdit {
     return Object.values(this._dueDate).some((it) => it === true);
   }
 
-  _onEditButtonClick() {
-    this._state.isEdit = !this._state.isEdit;
-    this.update();
-  }
-
-  _onSubmitButtonCLick(evt) {
+  _onSubmitButtonClick(evt) {
     evt.preventDefault();
     typeof this._onSubmit === `function` && this._onSubmit();
   }
@@ -302,11 +293,11 @@ class TaskEdit {
   }
 
   bind() {
-    this._element.querySelector(`.card__form`).addEventListener(`click`, this._onSubmitButtonCLick.bind(this));
+    this._element.querySelector(`.card__form`).addEventListener(`submit`, this._onSubmitButtonClick.bind(this));
   }
 
   unbind() {
-    this._element.querySelector(`.card__form`).removeEventListener(`click`, this._onSubmitButtonCLick);
+    this._element.querySelector(`.card__form`).removeEventListener(`submit`, this._onSubmitButtonClick);
   }
 
   render() {

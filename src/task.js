@@ -11,9 +11,6 @@ class Task {
     this._color = data.color;
     this._element = null;
 
-    this._state = {
-      isEdit: false,
-    };
   }
   _isRepeat() {
     return Object.values(this._repeatingDays).some((it) => it === true);
