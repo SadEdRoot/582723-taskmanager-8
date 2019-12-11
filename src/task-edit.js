@@ -10,6 +10,7 @@ class TaskEdit {
     this._repeatingDays = data.repeatingDays;
     this._color = data.color;
     this._element = null;
+    this._onSubmit = null;
   }
   _isRepeat() {
     return Object.values(this._repeatingDays).some((it) => it === true);
@@ -24,7 +25,7 @@ class TaskEdit {
     typeof this._onSubmit === `function` && this._onSubmit();
   }
 
-  set _onSubmit(fn) {
+  set onSubmit(fn) {
     this._onSubmit = fn;
   }
 
