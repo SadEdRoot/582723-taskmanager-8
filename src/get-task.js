@@ -1,4 +1,5 @@
 const ONEWEEK = 1000 * 60 * 60 * 24 * 7;
+const ONEDAY = 24 * 60 * 60 * 1000;
 const tagsList = [`homework`, `theory`, `practice`, `intensive`, `keks`, `sport`, `buy`];
 
 const getTags = (array) => {
@@ -13,7 +14,7 @@ const getTags = (array) => {
 
 const task = () => ({
   title: [`Lean JS`, `Finishing course`, `Get 100 points for Exam`][Math.floor(Math.random() * 3)],
-  dueDate: Date.now() - ONEWEEK + Math.floor(Math.random() * 14) * 24 * 60 * 60 * 1000,
+  dueDate: Date.now() - ONEWEEK + Math.floor(Math.random() * 14) * ONEDAY,
   tags: new Set(getTags(tagsList)),
   picture: `//picsum.photos/100/100?r=${Math.random()}`,
   repeatingDays: {

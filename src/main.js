@@ -1,10 +1,11 @@
 import getFilterElement from './make-filter.js';
 import getCardElement from './make-card.js';
 import getTaskData from './get-task';
+import Task from './task.js';
+import TaskEdit from './task-edit.js';
 
 const mainFilter = document.querySelector(`.main__filter`);
-const boardTasks = document.querySelector(`.board__tasks`);
-
+const tasksContainer = document.querySelector(`.board__tasks`);
 
 const filters = [
   {
@@ -38,49 +39,7 @@ const filters = [
     title: `archive`,
     taskNumber: 115
   }];
-/*
-const cards = [
-  {
-    id: `10`,
-    color: `black`,
-    edit: true,
-    deadline: true,
-    deadlineDate: `23 September`,
-    deadlineTime: `11:15 PM`,
-    repeat: false,
-    text: `Базовый текст`,
-    hashtag: [],
-    img: ``,
-    favorites: false
-  },
-  {
-    id: `11`,
-    color: `yellow`,
-    edit: false,
-    deadline: false,
-    deadlineDate: ``,
-    deadlineTime: ``,
-    repeat: true,
-    text: `Базовый текст`,
-    hashtag: [],
-    img: ``,
-    favorites: false
-  },
-  {
-    id: `12`,
-    color: `green`,
-    edit: true,
-    deadline: false,
-    deadlineDate: ``,
-    deadlineTime: ``,
-    repeat: false,
-    text: ``,
-    hashtag: [],
-    img: ``,
-    favorites: false
-  }
-];
-*/
+
 /* складывает шаблоны по списку */
 const createHTMLString = (elementList, template) => {
   let string = ``;
@@ -108,7 +67,7 @@ renderHTML(createHTMLString(filters, getFilterElement), mainFilter);
 /* создает события для всех фильтров */
 mainFilter.childNodes.forEach((element) => {
   element.addEventListener(`click`, () => {
-    renderHTML(createHTMLString(addCardToList(), getCardElement), boardTasks);
+    renderHTML(createHTMLString(addCardToList(), getCardElement), tasksContainer);
   });
 });
 
@@ -123,6 +82,51 @@ const addCardToList = () => {
   }
   return cardList;
 };
+
+const task = {
+  title: [
+    `Prepare for the pitch`,
+    `find money for travel`,
+    `eat something`,
+  ][Math.floor(Math.random() * 3)],
+  dueDate: Date.now() + 1 + Math.floor(Math.random() * 7) * 24 * 60 * 60 * 1000,
+  tags: new Set([
+    `cinema`,
+    `entertainment`,
+    `myself`,
+    `cinema`,
+  ]),
+  picture: `//picsum.photos/100/100?r=${Math.random()}`,
+  repeatingDays: {
+    'mo': false,
+    'tu': false,
+    'we': false,
+    'th': false,
+    'fr': false,
+    'sa': false,
+    'su': false,
+  },
+};
+
+const taskComponent = new Task(task);
+const editTaskComponent = new TaskEdit(task);
+
+tasksContainer.appendChild(taskComponent.render());
+
+taskComponent.onEdit = () => {
+  editTaskComponent.render();
+  tasksContainer.replaceChild(editTaskComponent.element, taskComponent.element);
+  taskComponent.unrender();
+};
+
+editTaskComponent.onSubmit = () => {
+  taskComponent.render();
+  tasksContainer.replaceChild(taskComponent.element, editTaskComponent.element);
+  editTaskComponent.unrender();
+}
+
+
+
 
 /* для проверки */
 /*
