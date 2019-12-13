@@ -11,6 +11,7 @@ class TaskEdit {
     this._color = data.color;
     this._element = null;
     this._onSubmit = null;
+    this._onSubmitButtonClick = this._onSubmitButtonClick.bind(this)
   }
   _isRepeat() {
     return Object.values(this._repeatingDays).some((it) => it === true);
@@ -294,7 +295,7 @@ class TaskEdit {
   }
 
   bind() {
-    this._element.querySelector(`.card__form`).addEventListener(`submit`, this._onSubmitButtonClick.bind(this));
+    this._element.querySelector(`.card__form`).addEventListener(`submit`, this._onSubmitButtonClick);
   }
 
   unbind() {
