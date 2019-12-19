@@ -1,7 +1,8 @@
-import createElement from './create-element.js';
+import Component from './component.js';
 
-class Task {
+class Task extends Component {
   constructor(data) {
+    super();
     this._id = data.id;
     this._title = data.title;
     this._tags = data.tags;
@@ -25,9 +26,6 @@ class Task {
     typeof this._onEdit === `function` && this._onEdit();
   }
 
-  get element() {
-    return this._element;
-  }
 
   set onEdit(fn) {
     this._onEdit = fn;
@@ -97,17 +95,6 @@ class Task {
 
   unbind() {
     this._element.querySelector(`.card__btn--edit`).removeEventListener(`click`, this._onEditButtonClick);
-  }
-
-  render() {
-    this._element = createElement(this.template);
-    this.bind();
-    return this._element;
-  }
-
-  unrender() {
-    this.unbind();
-    this._element = null;
   }
 
 }
