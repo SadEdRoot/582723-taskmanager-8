@@ -11,9 +11,14 @@ class TaskEdit extends Component {
     this._dueDate = data.dueDate;
     this._repeatingDays = data.repeatingDays;
     this._color = data.color;
-    this._element = null;
+
+    this._state.isDate = false;
+    this._state.isRepeat = false;
+
     this._onSubmit = null;
-    this._onSubmitButtonClick = this._onSubmitButtonClick.bind(this)
+    this._onSubmitButtonClick = this._onSubmitButtonClick.bind(this);
+    this._onChangeDate = this._onChangeDate.bind(this);
+    this._onChangeRepeated = this._onChangeRepeated.bind(this);
   }
 
   _isRepeat() {
@@ -26,7 +31,60 @@ class TaskEdit extends Component {
 
   _onSubmitButtonClick(evt) {
     evt.preventDefault();
-    typeof this._onSubmit === `function` && this._onSubmit();
+    const formData = new FormData(this._element.querySelector(`.card__form`));
+    console.log(formData);
+    const newData = this._processForm(formData);
+    typeof this._onSubmit === `function` && this._onSubmit(newData);
+
+    this.update(newData);
+  }
+
+  _processForm(formData) {
+    const entry = {
+      title: ``,
+      dueDate: new Date(),
+      tags: new Set(),
+      picture: `//picsum.photos/100/100?r=${Math.random()}`,
+      repeatingDays: {
+        'mo': false,
+        'tu': false,
+        'we': false,
+        'th': false,
+        'fr': false,
+        'sa': false,
+        'su': false,
+      },
+      color: ``,
+    };
+
+    const taskMapper = TaskEdit.createMapper(entry);
+    for (let pair of formData) {
+      const [key, value] = pair;
+      taskMapper[key] && taskMapper[key](value);
+    }
+    return entry;
+  }
+
+  _onChangeDate() {
+    this._state.isDate = !this._state.isDate;
+    this.unbind();
+    this._partialUpdate();
+    this.bind();
+  }
+
+  _onChangeTitle() {}
+
+  _onChangeColor() {}
+
+  _onChangeRepeated() {
+    this._state.isRepeat = !this._state.isRepeat;
+    this.unbind();
+    this._partialUpdate();
+    this.bind();
+  }
+
+  _partialUpdate() {
+    this.element.innerHTML = this.template;
   }
 
   set onSubmit(fn) {
@@ -35,9 +93,14 @@ class TaskEdit extends Component {
 
   get template() {
     return `
-    <article class="card card--edit card--${this._color} card--repeat">
+    <article class="card card--edit card--${this._color} ${this._isRepeat() ? `card--repeat` : ``}">
       <form class="card__form" method="get">
         <div class="card__inner">
+          <div class="card__control">
+            <button type="button" class="card__btn card__btn--edit">edit</button>
+            <button type="button" class="card__btn card__btn--archive">archive</button>
+            <button type="button" class="card__btn card__btn--favorites card__btn--disabled">favorites</button>
+          </div>
           <div class="card__color-bar">
             <svg class="card__color-bar-wave" width="100%" height="10">
               <use xlink:href="#wave"></use>
@@ -58,10 +121,10 @@ class TaskEdit extends Component {
             <div class="card__details">
               <div class="card__dates">
                 <button class="card__date-deadline-toggle" type="button">
-                  date: <span class="card__date-status">yes</span>
+                  date: <span class="card__date-status">${this._state.isDate ? `yes` : `no` }</span>
                 </button>
 
-                <fieldset class="card__date-deadline">
+                <fieldset class="card__date-deadline" ${!this._state.isDate ? `disabled` : `` }>
                   <label class="card__input-deadline-wrap">
                     <input
                       class="card__date"
@@ -74,10 +137,10 @@ class TaskEdit extends Component {
                 </fieldset>
 
                 <button class="card__repeat-toggle" type="button">
-                  repeat:<span class="card__repeat-status">yes</span>
+                  repeat:<span class="card__repeat-status">${this._state.isRepeat ? `yes` : `no` }</span>
                 </button>
 
-                <fieldset class="card__repeat-days">
+                <fieldset class="card__repeat-days" ${!this._state.isRepeat ? `disabled` : ``}>
                   <div class="card__repeat-days-inner">
                     <input
                       class="visually-hidden card__repeat-day-input"
@@ -85,6 +148,7 @@ class TaskEdit extends Component {
                       id="repeat-mo-4"
                       name="repeat"
                       value="mo"
+                      ${this._repeatingDays.mo ? `checked` : ``}
                     />
                     <label class="card__repeat-day" for="repeat-mo-4"
                       >mo</label
@@ -95,7 +159,7 @@ class TaskEdit extends Component {
                       id="repeat-tu-4"
                       name="repeat"
                       value="tu"
-                      checked
+                      ${this._repeatingDays.tu ? `checked` : ``}
                     />
                     <label class="card__repeat-day" for="repeat-tu-4"
                       >tu</label
@@ -106,6 +170,7 @@ class TaskEdit extends Component {
                       id="repeat-we-4"
                       name="repeat"
                       value="we"
+                      ${this._repeatingDays.we ? `checked` : ``}
                     />
                     <label class="card__repeat-day" for="repeat-we-4"
                       >we</label
@@ -116,6 +181,7 @@ class TaskEdit extends Component {
                       id="repeat-th-4"
                       name="repeat"
                       value="th"
+                      ${this._repeatingDays.th ? `checked` : ``}
                     />
                     <label class="card__repeat-day" for="repeat-th-4"
                       >th</label
@@ -126,7 +192,7 @@ class TaskEdit extends Component {
                       id="repeat-fr-4"
                       name="repeat"
                       value="fr"
-                      checked
+                      ${this._repeatingDays.fr ? `checked` : ``}
                     />
                     <label class="card__repeat-day" for="repeat-fr-4"
                       >fr</label
@@ -137,6 +203,7 @@ class TaskEdit extends Component {
                       name="repeat"
                       value="sa"
                       id="repeat-sa-4"
+                      ${this._repeatingDays.sa ? `checked` : ``}
                     />
                     <label class="card__repeat-day" for="repeat-sa-4"
                       >sa</label
@@ -147,7 +214,7 @@ class TaskEdit extends Component {
                       id="repeat-su-4"
                       name="repeat"
                       value="su"
-                      checked
+                      ${this._repeatingDays.su ? `checked` : ``}
                     />
                     <label class="card__repeat-day" for="repeat-su-4"
                       >su</label
@@ -224,6 +291,7 @@ class TaskEdit extends Component {
                   class="card__color-input card__color-input--black visually-hidden"
                   name="color"
                   value="black"
+                  ${this._color === `black` ? `checked` : ``}
                 />
                 <label
                   for="color-black-4"
@@ -236,7 +304,7 @@ class TaskEdit extends Component {
                   class="card__color-input card__color-input--yellow visually-hidden"
                   name="color"
                   value="yellow"
-                  checked
+                  ${this._color === `yellow` ? `checked` : ``}
                 />
                 <label
                   for="color-yellow-4"
@@ -249,6 +317,7 @@ class TaskEdit extends Component {
                   class="card__color-input card__color-input--blue visually-hidden"
                   name="color"
                   value="blue"
+                  ${this._color === `blue` ? `checked` : ``}
                 />
                 <label
                   for="color-blue-4"
@@ -261,6 +330,7 @@ class TaskEdit extends Component {
                   class="card__color-input card__color-input--green visually-hidden"
                   name="color"
                   value="green"
+                  ${this._color === `green` ? `checked` : ``}
                 />
                 <label
                   for="color-green-4"
@@ -273,6 +343,7 @@ class TaskEdit extends Component {
                   class="card__color-input card__color-input--pink visually-hidden"
                   name="color"
                   value="pink"
+                  ${this._color === `pink` ? `checked` : ``}
                 />
                 <label
                   for="color-pink-4"
@@ -295,10 +366,35 @@ class TaskEdit extends Component {
 
   bind() {
     this._element.querySelector(`.card__form`).addEventListener(`submit`, this._onSubmitButtonClick);
+    this._element.querySelector(`.card__date-deadline-toggle`).addEventListener(`click`, this._onChangeDate);
+    this._element.querySelector(`.card__repeat-day-input`).addEventListener(`click`, this._onChangeColor);
+    this._element.querySelector(`.card__repeat-toggle`).addEventListener(`click`, this._onChangeRepeated);
   }
 
   unbind() {
     this._element.querySelector(`.card__form`).removeEventListener(`submit`, this._onSubmitButtonClick);
+    this._element.querySelector(`.card__date-deadline`).removeEventListener(`click`, this._onChangeDate);
+    this._element.querySelector(`.card__repeat-day-input`).removeEventListener(`click`, this._onChangeColor);
+    this._element.querySelector(`.card__repeat-toggle`).removeEventListener(`click`, this._onChangeRepeated);
+  }
+
+  update(data) {
+    this._title = data.title;
+    this._tags = data.tags;
+    this._picture = data.picture;
+    this._dueDate = data.dueDate;
+    this._repeatingDays = data.repeatingDays;
+    this._color = data.color;
+  }
+
+  static createMapper(target) {
+    return {
+      hashtag: (value) => target.tags.add(value),
+      text: (value) => (target.title = value),
+      color: (value) => (target.color = value),
+      repeat: (value) => (target.repeatingDays[value] = true),
+      date: (value) => (target.dueDate = value),
+    }
   }
 }
 

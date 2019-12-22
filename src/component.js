@@ -3,9 +3,10 @@ import createElement from './create-element.js';
 class Component {
   constructor() {
     if (new.target === Component) {
-      throw new Error(`Can't instantiate BaseComponent, only concreate one.`)
+      throw new Error(`Can't instantiate BaseComponent, only concreate one.`);
     }
     this._element = null;
+    this._state = {};
   }
 
   get element() {
@@ -30,6 +31,8 @@ class Component {
   bind() {}
 
   unbind() {}
+
+  update() {}
 
 }
 

@@ -6,11 +6,14 @@ class Task extends Component {
     this._id = data.id;
     this._title = data.title;
     this._tags = data.tags;
+    this._repeatingDays = data.repeatingDays;
     this._picture = data.picture;
     this._dueDate = data.dueDate;
-    this._repeatingDays = data.repeatingDays;
     this._color = data.color;
-    this._element = null;
+
+    this._state.isDate = false;
+    this._state.isRepeat = false;
+
     this._onEditButtonClick = this._onEditButtonClick.bind(this);
 
   }
@@ -33,7 +36,7 @@ class Task extends Component {
 
   get template() {
     return `
-    <article class="card card--${this._color}">
+    <article class="card card--${this._color} ${this._isRepeat() ? `card--repeat` : ``}">
       <div class="card__form">
         <div class="card__inner">
           <div class="card__control">
@@ -95,6 +98,15 @@ class Task extends Component {
 
   unbind() {
     this._element.querySelector(`.card__btn--edit`).removeEventListener(`click`, this._onEditButtonClick);
+  }
+
+  update(data) {
+    this._title = data.title;
+    this._tags = data.tags;
+    this._picture = data.picture;
+    this._dueDate = data.dueDate;
+    this._repeatingDays = data.repeatingDays;
+    this._color = data.color;
   }
 
 }

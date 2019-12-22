@@ -119,7 +119,13 @@ taskComponent.onEdit = () => {
   taskComponent.unrender();
 };
 
-editTaskComponent.onSubmit = () => {
+editTaskComponent.onSubmit = (newObject) => {
+  task.title = newObject.title;
+  task.color = newObject.color;
+  task.repeatingDays = newObject.repeatingDays;
+  task.tags = newObject.tags;
+
+  taskComponent.update(task);
   taskComponent.render();
   tasksContainer.replaceChild(taskComponent.element, editTaskComponent.element);
   editTaskComponent.unrender();
