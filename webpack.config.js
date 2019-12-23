@@ -1,4 +1,5 @@
 const path = require(`path`);
+const flatpickr = require(`flatpickr`);
 
 module.exports = {
   entry: `./src/main.js`,
@@ -13,5 +14,5 @@ module.exports = {
     publicPath: `http:!/localhost:8080/`,
     compress: true,
     watchContentBase: true
-  }
+  },
 };

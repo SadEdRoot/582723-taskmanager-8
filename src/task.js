@@ -1,4 +1,5 @@
 import Component from './component.js';
+import moment from 'moment';
 
 class Task extends Component {
   constructor(data) {
@@ -69,8 +70,8 @@ class Task extends Component {
               <div class="card__dates">
                 <div class="card__date-deadline">
                   <p class="card__input-deadline-wrap">
-                    <span class="card__date">23 September</span>
-                    <span class="card__time">11:15 PM</span>
+                    <span class="card__date">${moment(`2019-12-15 09:30`).format(`DD MMMM`)}</span>
+                    <span class="card__time">${moment(`2019-12-15 09:30`).format(`hh:mm A`)}</span>
                   </p>
                 </div>
               </div>

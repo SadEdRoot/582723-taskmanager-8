@@ -1,4 +1,4 @@
-
+import flatpickr from 'flatpickr';
 import Component from './component.js';
 
 class TaskEdit extends Component {
@@ -32,7 +32,6 @@ class TaskEdit extends Component {
   _onSubmitButtonClick(evt) {
     evt.preventDefault();
     const formData = new FormData(this._element.querySelector(`.card__form`));
-    console.log(formData);
     const newData = this._processForm(formData);
     typeof this._onSubmit === `function` && this._onSubmit(newData);
 
@@ -129,10 +128,14 @@ class TaskEdit extends Component {
                     <input
                       class="card__date"
                       type="text"
-                      placeholder=""
+                      placeholder="23 September"
                       name="date"
-                      value="23 September 11:15 PM"
                     />
+                  </label>
+                  <label class="card__input-deadline-wrap">
+  
+                  <label class="card__input-deadline-wrap">
+                    <input class="card__time" type="text" placeholder="11:15 PM" name="time" />
                   </label>
                 </fieldset>
 
@@ -369,6 +372,20 @@ class TaskEdit extends Component {
     this._element.querySelector(`.card__date-deadline-toggle`).addEventListener(`click`, this._onChangeDate);
     this._element.querySelector(`.card__repeat-day-input`).addEventListener(`click`, this._onChangeColor);
     this._element.querySelector(`.card__repeat-toggle`).addEventListener(`click`, this._onChangeRepeated);
+    if (this._state.isDate) {
+      flatpickr(`.card__date`, {
+        altInput: true,
+        altFormat: `j F`,
+        dateFormat: `j F`
+      });
+      flatpickr(`.card__time`, {
+        enableTime: true,
+        noCalendar: true,
+        altInput: true,
+        altFormat: `h:i K`,
+        dateFormat: `h:i K`
+      });
+    }
   }
 
   unbind() {
