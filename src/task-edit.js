@@ -19,6 +19,8 @@ class TaskEdit extends Component {
     this._onSubmitButtonClick = this._onSubmitButtonClick.bind(this);
     this._onChangeDate = this._onChangeDate.bind(this);
     this._onChangeRepeated = this._onChangeRepeated.bind(this);
+    this._onDelete = null;
+    this._onDeleteButtonClick = this._onDeleteButtonClick.bind(this);
   }
 
   _isRepeat() {
@@ -36,6 +38,11 @@ class TaskEdit extends Component {
     typeof this._onSubmit === `function` && this._onSubmit(newData);
 
     this.update(newData);
+  }
+
+  _onDeleteButtonClick(evt) {
+    evt.preventDefault();
+    typeof this._onDelete === `function` && this._onDelete(this);
   }
 
   _processForm(formData) {
@@ -90,6 +97,10 @@ class TaskEdit extends Component {
     this._onSubmit = fn;
   }
 
+  set onDelete(fn) {
+    this._onDelete = fn;
+  }
+
   get template() {
     return `
     <article class="card card--edit card--${this._color} ${this._isRepeat() ? `card--repeat` : ``}">
@@ -133,7 +144,7 @@ class TaskEdit extends Component {
                     />
                   </label>
                   <label class="card__input-deadline-wrap">
-  
+
                   <label class="card__input-deadline-wrap">
                     <input class="card__time" type="text" placeholder="11:15 PM" name="time" />
                   </label>
@@ -372,6 +383,7 @@ class TaskEdit extends Component {
     this._element.querySelector(`.card__date-deadline-toggle`).addEventListener(`click`, this._onChangeDate);
     this._element.querySelector(`.card__repeat-day-input`).addEventListener(`click`, this._onChangeColor);
     this._element.querySelector(`.card__repeat-toggle`).addEventListener(`click`, this._onChangeRepeated);
+    this._element.querySelector(`.card__delete`).addEventListener(`click`, this._onDeleteButtonClick);
     if (this._state.isDate) {
       flatpickr(`.card__date`, {
         altInput: true,
@@ -393,6 +405,7 @@ class TaskEdit extends Component {
     this._element.querySelector(`.card__date-deadline`).removeEventListener(`click`, this._onChangeDate);
     this._element.querySelector(`.card__repeat-day-input`).removeEventListener(`click`, this._onChangeColor);
     this._element.querySelector(`.card__repeat-toggle`).removeEventListener(`click`, this._onChangeRepeated);
+    this._element.querySelector(`.card__delete`).addEventListener(`click`, this._onDeleteButtonClick);
   }
 
   update(data) {
@@ -411,7 +424,7 @@ class TaskEdit extends Component {
       color: (value) => (target.color = value),
       repeat: (value) => (target.repeatingDays[value] = true),
       date: (value) => (target.dueDate = value),
-    }
+    };
   }
 }
 
