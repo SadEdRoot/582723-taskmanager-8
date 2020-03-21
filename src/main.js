@@ -1,10 +1,8 @@
 import getFilterElement from './make-filter.js';
-import getCardElement from './make-card.js';
 import getTaskData from './get-task';
 import Task from './task.js';
 import TaskEdit from './task-edit.js';
 import getFiltersData from './get-filters.js';
-/* import task from './get-data.js'; */
 
 const mainFilter = document.querySelector(`.main__filter`);
 const tasksContainer = document.querySelector(`.board__tasks`);
@@ -13,7 +11,7 @@ const initTasks = [];
 /* иммитирует случайные данные с сервера */
 for (let i = 0; i < (Math.floor(Math.random() * 10) + 1); i++) {
   initTasks.push(getTaskData());
-};
+}
 
 const createNewTask = () => {
   /* add  empty task to data; */
@@ -26,7 +24,6 @@ document.querySelector(`#control__new-task`).addEventListener(`click`, createNew
 const deleteTask = (tasks, i) => {
   tasks.splice(i, 1);
   return tasks;
-  console.log(`i'm done`);
 };
 
 const inicializationTask = (task, i, container) => {
@@ -52,8 +49,9 @@ const inicializationTask = (task, i, container) => {
     editTaskComponent.unrender();
   };
 
-  editTaskComponent.onDelete = (element) => {
+  editTaskComponent.onDelete = () => {
     deleteTask(tasks, i);
+    container.removeChild(editTaskComponent.element);
     editTaskComponent.unrender();
 
   };
@@ -99,6 +97,6 @@ renderHTML(createHTMLString(getFiltersData, getFilterElement), mainFilter);
 /* создает события для всех фильтров */
 mainFilter.childNodes.forEach((element) => {
   element.addEventListener(`click`, () => {
-    console.log(`I change a filter`)
+    /** add react for change filter */
   });
 });
