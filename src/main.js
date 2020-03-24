@@ -4,6 +4,10 @@ import Task from './task.js';
 import TaskEdit from './task-edit.js';
 import getFiltersData from './get-filters.js';
 
+const mainContainer = document.querySelector(`.board`);
+
+mainContainer.removeChild(document.querySelector(`.board__no-tasks`));
+
 const mainFilter = document.querySelector(`.main__filter`);
 const tasksContainer = document.querySelector(`.board__tasks`);
 
