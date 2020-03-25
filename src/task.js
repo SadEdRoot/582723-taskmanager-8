@@ -12,8 +12,8 @@ class Task extends Component {
     this._dueDate = data.dueDate;
     this._color = data.color;
 
-    this._state.isDate = false;
-    this._state.isRepeat = false;
+    this._state.isDate = Object.values(this._dueDate).some((it) => it === true);
+    this._state.isRepeat = Object.values(this._repeatingDays).some((it) => it === true);
 
     this._onEditButtonClick = this._onEditButtonClick.bind(this);
 
@@ -70,8 +70,8 @@ class Task extends Component {
               <div class="card__dates">
                 <div class="card__date-deadline">
                   <p class="card__input-deadline-wrap">
-                    <span class="card__date">${moment(`2019-12-15 09:30`).format(`DD MMMM`)}</span>
-                    <span class="card__time">${moment(`2019-12-15 09:30`).format(`hh:mm A`)}</span>
+                    <span class="card__date">${moment(this._dueDate).format(`DD MMMM`)}</span>
+                    <span class="card__time">${moment(this._dueDate).format(`hh:mm A`)}</span>
                   </p>
                 </div>
               </div>
@@ -108,6 +108,8 @@ class Task extends Component {
     this._dueDate = data.dueDate;
     this._repeatingDays = data.repeatingDays;
     this._color = data.color;
+    this._isRepeat();
+    this._isDeadline();
   }
 
 }

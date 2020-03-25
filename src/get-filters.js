@@ -7,12 +7,10 @@ const filters = [
   {
     title: `overdue`,
     taskNumber: 0,
-    isDisabled: true
   },
   {
     title: `today`,
     taskNumber: 0,
-    isDisabled: true
   },
   {
     title: `favorites`,

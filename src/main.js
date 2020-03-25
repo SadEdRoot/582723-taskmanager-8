@@ -1,17 +1,19 @@
-import getFilterElement from './make-filter.js';
+import Filter from './filter.js';
 import getTaskData from './get-task';
 import Task from './task.js';
 import TaskEdit from './task-edit.js';
 import getFiltersData from './get-filters.js';
+import moment from 'moment';
 
 const mainContainer = document.querySelector(`.board`);
 
 mainContainer.removeChild(document.querySelector(`.board__no-tasks`));
 
-const mainFilter = document.querySelector(`.main__filter`);
+const filterContainer = document.querySelector(`.main__filter`);
 const tasksContainer = document.querySelector(`.board__tasks`);
 
 const initTasks = [];
+
 /* иммитирует случайные данные с сервера */
 for (let i = 0; i < (Math.floor(Math.random() * 10) + 1); i++) {
   initTasks.push(getTaskData());
@@ -46,6 +48,7 @@ const inicializationTask = (task, i, container) => {
     task.color = newObject.color;
     task.repeatingDays = newObject.repeatingDays;
     task.tags = newObject.tags;
+    task.dueDate = newObject.dueDate;
 
     taskComponent.update(task);
     taskComponent.render();
@@ -57,16 +60,16 @@ const inicializationTask = (task, i, container) => {
     deleteTask(tasks, i);
     container.removeChild(editTaskComponent.element);
     editTaskComponent.unrender();
-
   };
 
-  tasksContainer.appendChild(taskComponent.render());
+  container.appendChild(taskComponent.render());
 };
 
 const renderTasks = (tasks, container) => {
   container.innerHTML = ``;
   for (let i = 0; i < tasks.length; i++) {
     const task = tasks[i];
+    task.id = i;
     inicializationTask(task, i, container);
   }
 
@@ -74,33 +77,36 @@ const renderTasks = (tasks, container) => {
 
 renderTasks(initTasks, tasksContainer);
 
-/* складывает шаблоны по списку */
-const createHTMLString = (elementList, template) => {
-  let string = ``;
-  elementList.forEach((element) => {
-    string += template(element);
-  });
-  return string;
+const filterTasks = (initialTasks, filterName) => {
+  switch (filterName) {
+    case `filter__all`:
+      return initialTasks;
+
+    case `filter__overdue`:
+      return initialTasks.filter((it) => it.dueDate < Date.now());
+
+    case `filter__today`:
+      return initialTasks.filter((it) => moment(it.dueDate).date() === moment().date()); // добавить диапозон в текущий день
+
+    case `filter__repeating`:
+      return initialTasks.filter((it) => Object.entries(it.repeatingDays).some((rec) => rec[1]));
+  }
 };
 
-/* отрисовывает HTML в контейнере */
-const renderHTML = (html, container) => {
-  const filtersListFragment = document.createDocumentFragment();
-  const parser = new DOMParser();
-  const elements = parser.parseFromString(html, `text/html`);
-  const cardChildren = elements.body.childNodes;
-  cardChildren.forEach((element) => {
-    filtersListFragment.appendChild(element);
-  });
+const renderFilters = (filters, container) => {
   container.innerHTML = ``;
-  container.appendChild(filtersListFragment);
+  for (let i = 0; i < filters.length; i++) {
+    const filter = filters[i];
+    const filterComponent = new Filter(filter);
+
+    container.appendChild(filterComponent.render());
+  }
 };
 
-renderHTML(createHTMLString(getFiltersData, getFilterElement), mainFilter);
+renderFilters(getFiltersData, filterContainer);
 
-/* создает события для всех фильтров */
-mainFilter.childNodes.forEach((element) => {
-  element.addEventListener(`click`, () => {
-    /** add react for change filter */
-  });
-});
+filterContainer.onchange = (evt) => {
+  const filterName = evt.target.id;
+  const filterTask = filterTasks(initTasks, filterName);
+  renderTasks(filterTask, tasksContainer);
+};
