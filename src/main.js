@@ -4,6 +4,13 @@ import Task from './task.js';
 import TaskEdit from './task-edit.js';
 import getFiltersData from './get-filters.js';
 import moment from 'moment';
+import Api from './api.js';
+
+
+const AUTHORIZATION = `Basic dXNlckBwYXNzd29yZAo=${Math.random()}`;
+const END_POINT = `https://es8-demo-srv.appspot.com/task-manager`;
+
+const api = new Api({endPoint: END_POINT, authorization: AUTHORIZATION});
 
 const mainContainer = document.querySelector(`.board`);
 
@@ -11,6 +18,7 @@ mainContainer.removeChild(document.querySelector(`.board__no-tasks`));
 
 const filterContainer = document.querySelector(`.main__filter`);
 const tasksContainer = document.querySelector(`.board__tasks`);
+
 
 const initTasks = [];
 
@@ -74,8 +82,13 @@ const renderTasks = (tasks, container) => {
   }
 
 };
+api.getTasks()
+  .then((tasks) => {
+    initTasks = tasks;
+    renderTasks(initTasks, tasksContainer);
+    renderFilters(getFiltersData, filterContainer);
+  });
 
-renderTasks(initTasks, tasksContainer);
 
 const filterTasks = (initialTasks, filterName) => {
   switch (filterName) {
@@ -102,8 +115,6 @@ const renderFilters = (filters, container) => {
     container.appendChild(filterComponent.render());
   }
 };
-
-renderFilters(getFiltersData, filterContainer);
 
 filterContainer.onchange = (evt) => {
   const filterName = evt.target.id;
