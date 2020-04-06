@@ -57,14 +57,12 @@ class Api {
     return this._load({
       url: `tasks/${id}`,
       method: Method.DELETE,
-    })
-    .then(toJSON)
-    .then(ModelTask.parseTask);
+    });
   }
 
-  _load(url, method = Method.GET, body = null, headers = new Headers()) {
+  _load({url, method = Method.GET, body = null, headers = new Headers()}) {
     headers.append(`Authorization`, this._authorization);
-    return fetch(`${this._endPoint}/${url.url}`, {method, body, headers, credentials: `include`})
+    return fetch(`${this._endPoint}/${url}`, {method, body, headers})
       .then(checkStatus)
       .catch((err) => {
         console.error(`fetch error: ${err}`);

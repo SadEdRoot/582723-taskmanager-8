@@ -42,7 +42,9 @@ class TaskEdit extends Component {
 
   _onDeleteButtonClick(evt) {
     evt.preventDefault();
-    typeof this._onDelete === `function` && this._onDelete(this);
+    typeof this._onDelete === `function` && this._onDelete({id: this._id});
+
+    //this._onDelete(this);
   }
 
   _processForm(formData) {

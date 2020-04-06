@@ -6,7 +6,6 @@ import getFiltersData from './get-filters.js';
 import moment from 'moment';
 import Api from './api.js';
 
-
 const AUTHORIZATION = `Basic dXNlckBwYXNzd29yZAo=${Math.random()}`;
 const END_POINT = `https://es8-demo-srv.appspot.com/task-manager`;
 
@@ -20,12 +19,7 @@ const filterContainer = document.querySelector(`.main__filter`);
 const tasksContainer = document.querySelector(`.board__tasks`);
 
 
-const initTasks = [];
-
-/* иммитирует случайные данные с сервера */
-for (let i = 0; i < (Math.floor(Math.random() * 10) + 1); i++) {
-  initTasks.push(getTaskData());
-}
+let initTasks = [];
 
 const createNewTask = () => {
   /* add  empty task to data; */
@@ -64,10 +58,20 @@ const inicializationTask = (task, i, container) => {
     editTaskComponent.unrender();
   };
 
-  editTaskComponent.onDelete = () => {
+  editTaskComponent.onDelete = ({id}) => {
+    api.deleteTask({id})
+    .then(() => api.getTasks())
+    .then(() => {
+      initTasks = tasks;
+      renderTasks(initTasks, tasksContainer);
+    })
+    .catch(alert);
+
+    /*
     deleteTask(tasks, i);
     container.removeChild(editTaskComponent.element);
     editTaskComponent.unrender();
+    */
   };
 
   container.appendChild(taskComponent.render());
@@ -82,6 +86,7 @@ const renderTasks = (tasks, container) => {
   }
 
 };
+
 api.getTasks()
   .then((tasks) => {
     initTasks = tasks;
